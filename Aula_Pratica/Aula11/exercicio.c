@@ -29,7 +29,7 @@ int main(){
     }
 } */
 
-// Exercicio 2
+// Exercicio 2-> se alguem conseguir me avisa
 int count = 0;
 int conjec(int v[], int n)
 {
