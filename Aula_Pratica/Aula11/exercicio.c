@@ -2,7 +2,7 @@
 #include <stdlib.h>
 
 // Exercicio 1
-/* int count=0;
+int count=0;
 double res = 1;
 double pot(double x, int n){
     if(count == n){
@@ -27,13 +27,13 @@ int main(){
     }else{
         printf("%.4f", pot(x, n));
     }
-} */
+}
 
 // Exercicio 2-> se alguem conseguir me avisa
 int count = 0;
-int conjec(int v[], int n)
+int conjec(int v[],int x, int j, int n)
 {
-  int p = 0, i, teste[n];
+  int p = 0, i;
 
   if (count == n)
   {
@@ -43,16 +43,22 @@ int conjec(int v[], int n)
   {
     count++;
 
-    for (i = 0; i < n; i++)
+    for (i = j; i <= n; i++)
     {
-      if (v[i] == v[i + 1])
+        if (x == v[i])
       {
-        p++;
+            p++;
       }
-      printf("%d aparece %d vez(es)\n", v[i - 1], p);
+        else
+        {
+            printf("%d aparece %d vez(es)\n", x, p);
+            x = v[i];
+            j = i;
+            p = 0;
+            break;
+        }
     }
-
-    return conjec(v, n);
+    return conjec(v, x, j, n);
   }
 }
 
@@ -82,8 +88,8 @@ int main()
       }
     }
   }
-
-  conjec(v, n);
+  i=0;
+  conjec(v, v[i], i ,n);
 }
 
 // Exercicio 3
