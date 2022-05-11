@@ -169,6 +169,33 @@ void particiona(no *lista)
   printf("\n\n");
 } */
 
+/*---------- Funções que sempre vao ser usadas ----------*/
+no *inicializa(void)
+{
+  return NULL;
+}
+
+no *insere_inicio(no *l, int i)
+{
+  no *novo = (no *)malloc(sizeof(no));
+  novo->conteudo = i;
+  novo->prox = l;
+  return novo;
+}
+
+void imprimir(no *lista)
+{
+  printf("\n Lista: ");
+  while (lista)
+  {
+    printf("%d ", lista->conteudo);
+    lista = lista->prox;
+  }
+  printf("\n\n");
+}
+
+/*------------------------------------------------------------*/
+
 // Exercicio 6
 typedef struct alunos notaAlunos;
 
@@ -232,27 +259,3 @@ void imprime_notas(notaAlunos *lista)
   printf("\n\n");
 }
 
-/*---------- Funções que sempre vao ser usadas ----------*/
-no *inicializa(void)
-{
-  return NULL;
-}
-
-no *insere_inicio(no *l, int i)
-{
-  no *novo = (no *)malloc(sizeof(no));
-  novo->conteudo = i;
-  novo->prox = l;
-  return novo;
-}
-
-void imprimir(no *lista)
-{
-  printf("\n Lista: ");
-  while (lista)
-  {
-    printf("%d ", lista->conteudo);
-    lista = lista->prox;
-  }
-  printf("\n\n");
-}
