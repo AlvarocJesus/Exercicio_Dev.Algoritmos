@@ -14,7 +14,7 @@ struct reg
 };
 
 // Exercicio 1
-/* no *ordena(no *lista, int max);
+no *ordena(no *lista, int max);
 
 int main(void)
 {
@@ -38,15 +38,16 @@ int main(void)
 
 no *ordena(no *lista, int max)
 {
+  int i;
   no *atual = (no *)malloc(sizeof(no));
   no *proximo = (no *)malloc(sizeof(no));
 
   atual = lista;
 
-  for (size_t i = 0; i < max; i++)
+  for (i = 0; i < max; i++)
   {
     proximo = atual->prox;
-    while (lista)
+    while (proximo!=NULL)
     {
       int aux = 0;
       if (atual->conteudo > proximo->conteudo)
@@ -55,16 +56,16 @@ no *ordena(no *lista, int max)
         atual->conteudo = proximo->conteudo;
         proximo->conteudo = aux;
       }
-      proximo = atual;
+      proximo = proximo->prox;
     }
-    atual = lista->prox;
+    atual = atual->prox;
   }
 
   return lista;
-} */
+}
 
 // Exercicio 2
-/* void busca(no *lista, int chave);
+void busca(no *lista, int chave);
 
 int main(void)
 {
@@ -87,32 +88,32 @@ int main(void)
 void busca(no *lista, int chave)
 {
   int count = 0;
+  int encontro = 0;
 
   while (lista)
   {
     if (lista->conteudo == chave)
     {
-      count++;
+      printf("Encontrado na posição %d", count);
+      encontro++;
     }
+    count++;
+    lista = lista->prox;
   }
-  if (count != 0)
-  {
-    printf("Encontrado na posição %d", count);
-  }
-  else
+  if (encontro == 0)
   {
     printf("Item nao encontrado");
   }
-} */
+}
 
 // Exercicio 3
 // Isso ocorre porque no função inserir estamos armazenando os valores usando o método de armazenamento de pilha, com isso o ultimo valor a ser digitado retorna com a posição 0, pois ele era o primeiro a ser comparado.
 
 // Exercicio 4
-// Nao. Pois
+// Não, já que como explicado no exercício anterior, a lista ligada funciona através de um esquema de pilha, sendo assim o último termo é o primeiro a ser lido, logo há outras formas mais práticas de se buscar um elemento dentro de uma lista, a função da lista ligada é apenas inserir e remover variáveis.
 
 // Exercicio 5
-/* void particiona(no *lista);
+void particiona(no *lista, int tam);
 
 int main(void)
 {
@@ -127,47 +128,44 @@ int main(void)
     scanf("%d", &num);
     lista = insere_inicio(lista, num);
   }
-  particiona(lista);
+  particiona(lista, tam);
 }
 
-void particiona(no *lista)
+void particiona(no *lista, int tam)
 {
-  no *par = (no *)malloc(sizeof(no));
-  no *impar = (no *)malloc(sizeof(no));
+  int par[tam];
+  int impar[tam];
 
-  // par = inicializa();
-  // impar = inicializa();
+  int i = 0, j = 0, k;
 
   while (lista)
   {
     if (lista->conteudo % 2 == 0)
     {
-      par->conteudo = lista->conteudo;
-      par->prox = lista;
+      par[i] = lista->conteudo;
+      i++;
     }
     else
     {
-      impar->conteudo = lista->conteudo;
-      impar->prox = lista;
+      impar[j] = lista->conteudo;
+      j++;
     }
+    lista = lista->prox;
   }
 
-  printf("\n Lista par: ");
-  while (par)
+  printf("\nLista par:");
+  for (k = i - 1; k >= 0; k--)
   {
-    printf("%d ", par->conteudo);
-    par = par->prox;
+    printf("%d ", par[k]);
   }
-  printf("\n\n");
 
-  printf("\n Lista impar: ");
-  while (impar)
+  printf("\nLista impar:");
+  for (k = j - 1; k >= 0; k--)
   {
-    printf("%d ", impar->conteudo);
-    impar = impar->prox;
+    printf("%d ", impar[k]);
   }
   printf("\n\n");
-} */
+}
 
 /*---------- Funções que sempre vao ser usadas ----------*/
 no *inicializa(void)
@@ -201,33 +199,38 @@ typedef struct alunos notaAlunos;
 
 notaAlunos *inicia(void);
 notaAlunos *insere_notas(notaAlunos *lista, int ra, double nota);
-void imprime_notas(notaAlunos *lista);
+void imprime_notas(notaAlunos *lista, int tam);
 
 struct alunos
 {
   int ra;
   double notas;
-  struct reg *prox;
+  struct alunos *prox;
 };
 
 int main()
 {
   notaAlunos *lista = inicia();
 
-  int ra;
+  int ra, tam=0;
   double nota;
 
-  while (ra != 0 && nota != 0)
+  printf("Para sair, digite 0 como valor de RA do aluno\n");
+  while (1)
   {
-
-    printf("Entre com o RA do Aluno :");
+    printf(" Entre com o RA do Aluno：\n");
     scanf("%d", &ra);
-    printf("Entre com a média :");
+    printf(" Entre com a média ：\n");
     scanf("%lf", &nota);
-    lista = insere_notas(lista, ra, nota);
+    if(ra == 0 && nota == 0){
+        break;
+    }else{
+        tam++;
+        lista = insere_notas(lista, ra, nota);
+    }
   }
 
-  imprime_notas(lista);
+  imprime_notas(lista, tam);
 }
 
 notaAlunos *inicia(void)
@@ -244,18 +247,24 @@ notaAlunos *insere_notas(notaAlunos *lista, int ra, double nota)
   return novo;
 }
 
-void imprime_notas(notaAlunos *lista)
+void imprime_notas(notaAlunos *lista, int tam)
 {
-  double soma = 0;
-  int qtd = 0;
+  int rav[tam], i, qtd=0;
+  double nota[tam],soma = 0;
+  
   while (lista)
   {
     soma += lista->notas;
+    rav[qtd]=lista->ra;
+    nota[qtd]=lista->notas;
     qtd++;
-    printf("O aluno com RA %d possui média : %.2lf\n", lista->ra, lista->notas);
     lista = lista->prox;
   }
-  printf("A média da turma foi : %.2lf", soma / qtd);
+  
+for(i=tam-1;i>=0;i--){
+    printf("O aluno com RA %d possui média ：%.2lf\n", rav[i], nota[i]);
+}
+  
+  printf("A média da turma foi ：%.2lf", soma / tam);
   printf("\n\n");
 }
-
